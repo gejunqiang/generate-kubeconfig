@@ -2,7 +2,7 @@ FROM bash:5
 
 ADD generate_kubeconfig.sh /usr/bin/generate_kubeconfig.sh
 
-RUN apk add curl && \
+RUN apk add curl && ln -s /usr/local/bin/bash /bin/bash && \
     curl -#ksSL "https://ndp-pub.nos-jd.163yun.com/dl/tools/kubernetes-client-v1.14.0-linux-amd64.tar.gz" | tar -zx -C /usr/ && \
     curl -#kssL -o cfssl_linux-amd64 https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 && \
     curl -#kssL -o cfssljson_linux-amd64 https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 && \
