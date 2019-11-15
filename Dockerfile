@@ -12,6 +12,6 @@ RUN apk add curl && ln -s /usr/local/bin/bash /bin/bash && \
     mv cfssljson_linux-amd64 /usr/local/bin/cfssljson && \
     mv cfssl-certinfo_linux-amd64 /usr/bin/cfssl-certinfo && \
     ln -s /usr/kubernetes/client/bin/kubectl /usr/bin/ && \
-    chmod 0755 /usr/bin/generate_kubeconfig.sh && ln -svf /usr/bin/generate_kubeconfig.sh /usr/bin/generate_kubeconfig
+    chmod 0755 /usr/bin/generate_kubeconfig.sh && ln -svf /usr/bin/generate_kubeconfig.sh /usr/bin/generate
 
-CMD ["generate_kubeconfig", "--help"]
+CMD ["generate", "--help"]
