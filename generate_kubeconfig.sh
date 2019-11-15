@@ -18,7 +18,7 @@ log(){
 }
 
 usage(){
-  log USE "generate-kubeconfig --api-server <api-server> [--cluster <cluster>] \
+  log USE "generate --api-server <api-server> [--cluster <cluster>] \
   [--ca <path of ca.pem>] [--ca-key <path of ca-key.pem>] [--group <csr_group>]"
 }
 
@@ -67,6 +67,12 @@ fi
 [ ! -f "$KUBECONFIG" ] || {
   log ERR "kubeconfig \"$KUBECONFIG\" is already exist" && exit 1
 }
+
+log INFO "api server: $KUBE_API_SERVER"
+log INFO "cluster: $CLUSTER"
+log INFO "ca: $CA"
+log INFO "ca-key: $CA_KEY"
+log INFO "csr-group: $CSR_GROUP"
 
 generate_cert(){
   CONFIG='{
@@ -155,13 +161,7 @@ show(){
   base64 "$KUBECONFIG"
 }
 
-generate_cert && generate_kubeconfig && {
-  log INFO "api server: $KUBE_API_SERVER"
-  log INFO "cluster: $CLUSTER"
-  log INFO "ca: $CA"
-  log INFO "ca-key: $CA_KEY"
-  log INFO "csr-group: $CSR_GROUP"
-} && show && {
+generate_cert && generate_kubeconfig && show && {
   rm -f "$KUBECONFIG"
 } || {
   log ERR "failed" && exit 1
