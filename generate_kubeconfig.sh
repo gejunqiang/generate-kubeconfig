@@ -119,7 +119,7 @@ generate_cert(){
     log ERR "cfssl gencert failed" && return 1
   }
 
-  rm -f "$CA_CONFIG $CA_CSR" || return 1
+  rm -f "$CA_CONFIG" "$CA_CSR" || return 1
 }
 
 generate_kubeconfig(){
@@ -149,9 +149,9 @@ generate_kubeconfig(){
 }
 
 show(){
-  echo "======$KUBECONFIG======"
+  echo "======KUBECONFIG======"
   cat "$KUBECONFIG"
-  echo "======base64 encode $KUBECONFIG======"
+  echo "======base64 encode KUBECONFIG======"
   base64 "$KUBECONFIG"
 }
 
@@ -161,7 +161,6 @@ generate_cert && generate_kubeconfig && {
   log INFO "ca: $CA"
   log INFO "ca-key: $CA_KEY"
   log INFO "csr-group: $CSR_GROUP"
-  log INFO "kubeconfig: $KUBECONFIG"
 } && show && {
   rm -f "$KUBECONFIG"
 } || {
