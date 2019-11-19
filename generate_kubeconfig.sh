@@ -6,7 +6,8 @@ export CA="$PWD/ca.pem"
 export CA_KEY="$PWD/ca-key.pem"
 export CA_CONFIG="$PWD/ca-config.json"
 export CA_CSR="$PWD/csr.json"
-export CSR_GROUP="cicd:deploy-operator"
+export CSR_GROUP="cicd:execution-operator"
+export CSR_USER="cicd:execution"
 export CLIENT_NAME="execution"
 export CLIENT_USER="execution"
 export KUBE_CONTEXT="default"
@@ -19,7 +20,7 @@ log(){
 
 usage(){
   log USE "generate --api-server <api-server> [--cluster <cluster>] \
-  [--ca <path of ca.pem>] [--ca-key <path of ca-key.pem>] [--group <csr_group>]"
+  [--ca <path of ca.pem>] [--ca-key <path of ca-key.pem>] [--user <csr_user>] [--group <csr_group>]"
 }
 
 while ARG="$1" && shift; do
@@ -35,6 +36,9 @@ while ARG="$1" && shift; do
     ;;
   --ca-key)
     CA_KEY="$1" && shift
+    ;;
+  --user)
+    CSR_USER="$1" && shift
     ;;
   --group)
     CSR_GROUP="$1" && shift
@@ -72,6 +76,7 @@ log INFO "api server: $KUBE_API_SERVER"
 log INFO "cluster: $CLUSTER"
 log INFO "ca: $CA"
 log INFO "ca-key: $CA_KEY"
+log INFO "csr-user: $CSR_USER"
 log INFO "csr-group: $CSR_GROUP"
 
 generate_cert(){
@@ -94,7 +99,7 @@ generate_cert(){
     }
   }'
   CSR="{
-    \"CN\": \"execution\",
+    \"CN\": \"$CSR_USER\",
     \"key\": {
       \"algo\": \"rsa\",
       \"size\": 2048
